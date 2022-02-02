@@ -2,7 +2,16 @@ const {Model, DataTypes} = require('sequelize');
 const bcrypt = require('bcryptjs');
 const sequelize = require('../config');
 
-class User extends Model {}
+class User extends Model {
+    // instance method that belongs to an instance or 1 user object from our DATABASE
+    hasPets() {
+        if (this.numberOfPets > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 User.init(
     {
@@ -26,6 +35,10 @@ User.init(
             validate: {
                 len: [8]
             }
+        },
+        numberOfPets: {
+            type: DataTypes.INTEGER,
+            default: 0
         }
     },
     {
