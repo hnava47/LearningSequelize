@@ -21,6 +21,44 @@ router.get('/:bookId', async (req, res) => {
     }
 });
 
+router.patch('/:bookId', async (req, res) => {
+    const {
+        title,
+        author,
+        isbn,
+        pages,
+        edition,
+        isPaperBack
+    } = req.body;
+
+    try {
+        // Update takes 2 parameters
+        // the 1st is an object for what columns you want to update
+        // and what you want to update them to
+        // the 2nd one is an object for which rows do you want to update
+        // Updated only gives back the number of records updated. To get the json records, use findByPk()
+        await Book.update(
+            {
+                title,
+                author,
+                isbn,
+                pages,
+                edition,
+                isPaperBack
+            },
+            {
+                where: {
+                    id: req.params.bookId
+                }
+            }
+        );
+        const updatedBook = await Book.findByPk(req.params.bookId)
+        res.json(updatedBook);
+    } catch (e) {
+        res.json(e);
+    }
+});
+
 router.post('/', async (req, res) => {
     const {title, author} = req.body;
     try {
