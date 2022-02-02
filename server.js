@@ -1,7 +1,6 @@
 const express = require('express');
 const sequelize = require('./config');
-
-const Book = require('./models/Book');
+const routes = require('./routes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -19,8 +18,7 @@ routes
     api
         bookRoutes
 */
-
-
+app.use(routes);
 
 
 // connect to the database prior to starting our server
