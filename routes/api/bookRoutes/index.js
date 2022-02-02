@@ -131,7 +131,7 @@ router.post('/seed', async (req, res) => {
 // DELETE route
 router.delete('/:bookId', async (req, res) => {
     try {
-        const deletedBook = await Book.findByPk(req.params.bookId)
+        const deletedBook = await Book.findByPk(req.params.bookId);
         await Book.destroy({
             where: {
                 id: req.params.bookId

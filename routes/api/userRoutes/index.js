@@ -35,4 +35,57 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:userId', async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        res.json(user);
+    } catch (e) {
+        console.log(e);
+        res.json(e);
+    }
+});
+
+router.patch('/:userId', async (req, res) => {
+    const {
+        username,
+        email,
+        password
+    } = req.body;
+
+    try {
+        await User.update(
+            {
+                username,
+                email,
+                password
+            },
+            {
+                where: {
+                    id: req.params.userId
+                }
+            }
+        );
+        const updatedUser = await User.findByPk(req.params.userId);
+        res.json(updatedUser);
+    } catch (e) {
+        console.log(e);
+        res.json(e);
+    }
+});
+
+router.delete('/:userId', async (req, res) => {
+    try {
+        const deletedUser = await User.findByPk(req.params.userId);
+        await User.destroy({
+            where: {
+                id: req.params.userId
+            }
+        });
+        res.json(deletedUser);
+    } catch (e) {
+        console.log(e);
+        res.json(e);
+    }
+});
+
 module.exports = router;
