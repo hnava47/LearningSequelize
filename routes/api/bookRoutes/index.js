@@ -128,4 +128,19 @@ router.post('/seed', async (req, res) => {
     }
 });
 
+// DELETE route
+router.delete('/:bookId', async (req, res) => {
+    try {
+        const deletedBook = await Book.findByPk(req.params.bookId)
+        await Book.destroy({
+            where: {
+                id: req.params.bookId
+            }
+        });
+        res.json(deletedBook);
+    } catch (e) {
+        res.json(e);
+    }
+});
+
 module.exports = router;
