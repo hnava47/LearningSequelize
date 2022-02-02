@@ -14,13 +14,10 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
         const newUser = await User.create({
             username,
             email,
-            password: hashedPassword
+            password
         });
         res.json(newUser);
     } catch (e) {
@@ -66,7 +63,8 @@ router.patch('/:userId', async (req, res) => {
             {
                 where: {
                     id: req.params.userId
-                }
+                },
+                individualHooks: true
             }
         );
         const updatedUser = await User.findByPk(req.params.userId);
