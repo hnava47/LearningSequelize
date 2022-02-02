@@ -92,4 +92,36 @@ router.delete('/:userId', async (req, res) => {
     }
 });
 
+// For logging in a user to our app
+router.post('/login', async (req, res) => {
+    const {email, password} = req.body;
+
+    if (!email || !password) {
+        return res.status(401).json({error: 'You must provide a valid email and password'});
+    }
+
+    try {
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (!user) {
+            return res.status(400).json({error: 'No user with that email'});
+        }
+
+        const isMatchingPassword = await bcrypt.compare(password, user.password);
+
+        if (!isMatchingPassword) {
+            return res.status(401).json({error: 'Invalid password'});
+        }
+
+        res.json({message: 'You are now logged in successfully'});
+    } catch (e) {
+        console.log(e);
+        res.json(e);
+    }
+});
+
 module.exports = router;
