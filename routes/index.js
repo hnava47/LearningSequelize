@@ -26,7 +26,9 @@ router.post('/seed', async (req, res) => {
         }
     ];
 
-    const users = await User.bulkCreate(usersToCreate);
+    const users = await User.bulkCreate(usersToCreate, {
+        individualHooks: true
+    });
 
     const todosToCreate = [
         {
